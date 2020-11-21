@@ -163,13 +163,12 @@ def flip_given_bit(given_var_list, bit):
         new_var_list[bit] = True
     return new_var_list
 
-def calc_conditional_prob(var_list, bit):
+def calc_conditional_prob(var_list, conditional_list):
     # Calculate probabilty of current assignment
     curr_prob = calculate_prob(var_list)
     # Calculate conditional probability for each node
 
     # Flip the bit and find new probability
-    conditional_list = flip_given_bit(var_list, bit)
     new_prob = calculate_prob(conditional_list)
 
         
@@ -178,6 +177,7 @@ def calc_conditional_prob(var_list, bit):
     return conditional_prob
 
 def choose_bit():
+    '''
     num = randint(0,471)
     if num == 471:
         bit = COVID
@@ -193,24 +193,58 @@ def choose_bit():
         bit = NAS_FEVER
     else:
         bit = COUGH_NAS
-        
+    '''
+    bit = randint(0,6)    
     return bit
 
 def main():
-    covid_counter = 0
     for run_num in range(0,NUM_RUN + 1):
         my_list = random_variables()
+        covid_counter = 0
+        cough_counter = 0
+        fever_counter = 0
+        nas_counter = 0
+        FC_counter = 0
+        NF_counter = 0
+        CN_counter = 0
+        
         for instance_num in range(0, NUM_INSTANCES + 1):
             curr_bit =  choose_bit()
-            if my_list[0]:
+            new_list = flip_given_bit(my_list, curr_bit)
+            if new_list[COVID]:
                 covid_counter += 1
-            prob = calc_conditional_prob(my_list, curr_bit)
+            if new_list[COUGH]:
+                cough_counter += 1
+            if new_list[FEVER]:
+                fever_counter += 1
+            if new_list[NAS]:
+                nas_counter += 1
+            if new_list[FEVER_COUGH]:
+                FC_counter += 1
+            if new_list[NAS_FEVER]:
+                NF_counter += 1
+            if new_list[COUGH_NAS]:
+                CN_counter += 1
+            
+            prob = calc_conditional_prob(my_list, new_list)
             PROBS.append(prob)
+            my_list = new_list
+            '''
             if instance_num > 0 and instance_num % 1000 == 0:
                 print("Run number: ", instance_num)
                 print("Covid percent: ", covid_counter/instance_num)
                 print()
-    
+            '''
+        print()
+        print ("Run num ", run_num)
+        print("Covid percent: ", covid_counter/NUM_INSTANCES * 100)  
+        print("Cough percent: ", cough_counter/NUM_INSTANCES * 100)
+        print("Fever percent: ", fever_counter/NUM_INSTANCES * 100)
+        print("NAS percent: ", nas_counter/NUM_INSTANCES * 100)
+        print("FC percent: ", FC_counter/NUM_INSTANCES * 100)
+        print("NF percent: ", NF_counter/NUM_INSTANCES * 100)
+        print("CN percent: ", CN_counter/NUM_INSTANCES * 100)
+
     
     
 main()
