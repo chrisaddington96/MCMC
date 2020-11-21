@@ -1,1 +1,25 @@
+11/20/20
 
+Javid Notes:
+P(A | all other vars) = P(ABCDEFG) / P(ABCDEFG) + P(~A BCDEFG)
+Markov blanket - Most variables are irrelevant to the calculation, the ones that are relevent impact the
+probability.
+
+Use dictionary for probablity definitions: Populate with a for loop (for blah in range(0,128))
+32 valid probabilities because two are set to true
+Take probability values and populate dictionary - use bitwise integer representation, bitwise &,
+bit-strings
+for state in range(vars + 1)
+if(state bit-wise and covid_bit == covid_bid) - Is the covid bit true
+else - no
+
+Check bit by bit to see if it is set to true, if it is assign a value, if not assign a different value.
+Second tier doens't need to depend on first tier
+
+Set probabilities, find a random valid set, do gibbs sampling
+Want counters to see what bits are flipped at each state - flip N and FN at each iteration
+Try to flip through all valid variables (0-5) in order, use random() to see if you flip bit or not
+
+TODO:
+
+1) 
